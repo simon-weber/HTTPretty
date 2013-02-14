@@ -38,7 +38,7 @@
 
 <p><a href="http://travis-ci.org/gabrielfalcao/HTTPretty"><img src="https://secure.travis-ci.org/gabrielfalcao/HTTPretty.png" alt="Build Status"></a></p>
 
-<h1>New in version 0.5.8</h1>
+<h1>New in version 0.5.8 <a name="news-in-058" href="#news-in-058"> <span>&nbsp;</span> </a></h1>
 
 <ul>
 <li>Support to <a href="#matching-regular-expressions">register regular expressions to match urls</a>
@@ -247,7 +247,7 @@ many responses as you want.</p>
         <span class="n">expect</span><span class="p">(</span><span class="n">line_iter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">twitter_response_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
 </pre></div>
 
-<h2>dynamic responses through callbacks</h2>
+<h2>dynamic responses through callbacks <a name="dynamic-responses-through-callbacks" href="#dynamic-responses-through-callbacks"> <span>&nbsp;</span> </a></h2>
 
 <p>Set a callback to allow for dynamic responses based on the request.</p>
 
@@ -270,7 +270,7 @@ many responses as you want.</p>
     <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s">'The GET response from https://api.yahoo.com/test'</span><span class="p">)</span>
 </pre></div>
 
-<h2>matching regular expressions</h2>
+<h2>matching regular expressions <a name="matching-regular-expressions" href="#matching-regular-expressions"> <span>&nbsp;</span> </a></h2>
 
 <p>You can register a
 <a href="http://docs.python.org/2/library/re.html#re.compile">compiled regex</a>
