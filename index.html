@@ -33,12 +33,39 @@
         <h1>HTTPretty</h1>
 
 <blockquote>
-<p>Version 0.5.8</p>
+<p>Version 0.5.14</p>
 </blockquote>
 
 <p><a href="http://travis-ci.org/gabrielfalcao/HTTPretty"><img src="https://secure.travis-ci.org/gabrielfalcao/HTTPretty.png" alt="Build Status"></a></p>
 
-<h1>New in version 0.5.8 <a name="news-in-058" href="#news-in-058"> <span>&nbsp;</span> </a></h1>
+<h3>New in version 0.5.14</h3>
+
+<ul>
+<li><p>Delegate calls to other methods on socket</p></li>
+<li><p><a href="https://github.com/gabrielfalcao/HTTPretty/pull/49">Normalized header</a> strings</p></li>
+<li><p>Callbacks are <a href="https://github.com/gabrielfalcao/HTTPretty/pull/47">more intelligent now</a></p></li>
+<li><p>Normalize urls matching for url quoting</p></li>
+</ul><h3>New in version 0.5.12</h3>
+
+<ul>
+<li>HTTPretty doesn't hang when using other application protocols under
+a @httprettified decorated test.</li>
+</ul><h3>New in version 0.5.11</h3>
+
+<ul>
+<li>Ability to know whether HTTPretty is or not enabled through <code>HTTPretty.is_enabled()</code>
+</li>
+</ul><h3>New in version 0.5.10</h3>
+
+<ul>
+<li>Support to multiple methods per registered URL. Thanks <a href="https://github.com/hughsaunders" class="user-mention">@hughsaunders</a>
+</li>
+</ul><h3>New in version 0.5.9</h3>
+
+<ul>
+<li>Fixed python 3 support. Thanks <a href="https://github.com/spulec" class="user-mention">@spulec</a>
+</li>
+</ul><h3>New in version 0.5.8</h3>
 
 <ul>
 <li>Support to <a href="#matching-regular-expressions">register regular expressions to match urls</a>
@@ -247,7 +274,7 @@ many responses as you want.</p>
         <span class="n">expect</span><span class="p">(</span><span class="n">line_iter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">twitter_response_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
 </pre></div>
 
-<h2>dynamic responses through callbacks <a name="dynamic-responses-through-callbacks" href="#dynamic-responses-through-callbacks"> <span>&nbsp;</span> </a></h2>
+<h2>dynamic responses through callbacks</h2>
 
 <p>Set a callback to allow for dynamic responses based on the request.</p>
 
@@ -270,7 +297,7 @@ many responses as you want.</p>
     <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s">'The GET response from https://api.yahoo.com/test'</span><span class="p">)</span>
 </pre></div>
 
-<h2>matching regular expressions <a name="matching-regular-expressions" href="#matching-regular-expressions"> <span>&nbsp;</span> </a></h2>
+<h2>matching regular expressions</h2>
 
 <p>You can register a
 <a href="http://docs.python.org/2/library/re.html#re.compile">compiled regex</a>
@@ -313,6 +340,17 @@ and it will be matched against the requested urls.</p>
     <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s">'{"repositories": ["HTTPretty", "lettuce"]}'</span><span class="p">)</span>
     <span class="n">expect</span><span class="p">(</span><span class="n">HTTPretty</span><span class="o">.</span><span class="n">last_request</span><span class="o">.</span><span class="n">method</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s">"POST"</span><span class="p">)</span>
     <span class="n">expect</span><span class="p">(</span><span class="n">HTTPretty</span><span class="o">.</span><span class="n">last_request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s">'content-type'</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="s">'text/json'</span><span class="p">)</span>
+</pre></div>
+
+<h2>checking if is enabled</h2>
+
+<div class="highlight"><pre>
+<span class="n">HTTPretty</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+<span class="n">HTTPretty</span><span class="o">.</span><span class="n">is_enabled</span><span class="p">()</span><span class="o">.</span><span class="n">should</span><span class="o">.</span><span class="n">be</span><span class="o">.</span><span class="n">true</span>
+
+<span class="n">HTTPretty</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+<span class="n">HTTPretty</span><span class="o">.</span><span class="n">is_enabled</span><span class="p">()</span><span class="o">.</span><span class="n">should</span><span class="o">.</span><span class="n">be</span><span class="o">.</span><span class="n">false</span>
+
 </pre></div>
 
 <h1>Motivation</h1>
@@ -388,7 +426,7 @@ make unit functional
 </ol><h1>License</h1>
 
 <pre><code>&lt;HTTPretty - HTTP client mock for Python&gt;
-Copyright (C) &lt;2011-2012&gt;  Gabriel Falcão &lt;gabriel@nacaolivre.org&gt;
+Copyright (C) &lt;2011-2013&gt;  Gabriel Falcão &lt;gabriel@nacaolivre.org&gt;
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -411,6 +449,21 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 </code></pre>
+
+<h1>Main contributors</h1>
+
+<p>There folks made a remarkable contribution to HTTPretty:</p>
+
+<ul>
+<li>Steve Pulec ~&gt; <a href="https://github.com/spulec" class="user-mention">@spulec</a>
+</li>
+<li>Hugh Saunders ~&gt; <a href="https://github.com/hughsaunders" class="user-mention">@hughsaunders</a>
+</li>
+<li>Matt Luongo ~&gt; <a href="https://github.com/mhluongo" class="user-mention">@mhluongo</a>
+</li>
+<li>James Rowe ~&gt; <a href="https://github.com/JNRowe" class="user-mention">@JNRowe</a>
+</li>
+</ul>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
