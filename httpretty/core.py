@@ -32,7 +32,7 @@ import socket
 import functools
 import itertools
 import warnings
-import logging
+import select
 import traceback
 import json
 import contextlib
@@ -325,17 +325,26 @@ class fakesock(object):
             self.truesock.settimeout(0)
             self.truesock.sendall(data, *args, **kw)
 
+            SELECT_TIMEOUT = 10
             should_continue = True
+            
             while should_continue:
-                try:
-                    received = self.truesock.recv(self._bufsize)
-                    self.fd.write(received)
-                    should_continue = len(received) > 0
+                read_ready_list, _, _ = select.select([self.truesock,], [],
+                                                      [], SELECT_TIMEOUT)
 
-                except socket.error as e:
-                    if e.errno == EAGAIN:
-                        continue
+                if not read_ready_list:
+                    # We get there on timeouts, meaning that after SELECT_TIMEOUT
+                    # there is no new data in self.truesock
+                    should_continue = False
                     break
+
+                for rr_sock in read_ready_list:
+                    try:
+                        received = rr_sock.recv(1)
+                    except socket.error:
+                        should_continue = False
+                    else:
+                        self.fd.write(received)
 
             self.fd.seek(0)
 
