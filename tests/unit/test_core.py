@@ -294,14 +294,22 @@ def test_fakesock_socket_makefile(old_socket):
     socket._entry.fill_filekind.assert_called_once_with(fd)
 
 
+@patch('select.select')
 @patch('httpretty.core.old_socket')
-def test_fakesock_socket_real_sendall(old_socket):
+def test_fakesock_socket_real_sendall(old_socket, select_mock):
     ("fakesock.socket#real_sendall sends data and buffers "
      "the response in the file descriptor")
     # Background: the real socket will stop returning bytes after the
     # first call
     real_socket = old_socket.return_value
-    real_socket.recv.side_effect = ['response from server', ""]
+
+    response = 'response from server'
+    real_socket.recv.side_effect = response  # return 1 char for each call
+
+    select_ready = ([real_socket], [], [])
+    select_not_ready = ([], [], [])
+
+    select_mock.side_effect = ([select_ready] * len(response)) + [select_not_ready]
 
     # Given a fake socket
     socket = fakesock.socket()
@@ -315,11 +323,8 @@ def test_fakesock_socket_real_sendall(old_socket):
     # And the timeout was set to 0
     real_socket.settimeout.assert_called_once_with(0)
 
-    # And recv was called with the bufsize
-    real_socket.recv.assert_has_calls([
-        call(16),
-        call(16),
-    ])
+    # And recv was called for each byte
+    real_socket.recv.assert_has_calls([call(1)] * len(response))
 
     # And the buffer should contain the data from the server
     socket.fd.getvalue().should.equal("response from server")
